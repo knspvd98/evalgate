@@ -1,0 +1,156 @@
+{
+  "source": "Hand-authored forbidden-call regression fixture",
+  "traces": [
+    {
+      "id": "address-known",
+      "output": {
+        "category": "water_outage",
+        "address": "Учебная, 15",
+        "review": false
+      },
+      "calls": [
+        {
+          "name": "lookup_address",
+          "arguments": {
+            "address": "Учебная, 15"
+          }
+        }
+      ],
+      "evidence": [
+        "fixture:address-15"
+      ],
+      "abstained": false,
+      "cost_usd": 0,
+      "latency_ms": 0
+    },
+    {
+      "id": "address-missing",
+      "output": {
+        "category": "possible_pipe_leak",
+        "missing": [
+          "address"
+        ],
+        "review": true
+      },
+      "calls": [],
+      "evidence": [],
+      "abstained": true,
+      "cost_usd": 0,
+      "latency_ms": 0
+    },
+    {
+      "id": "address-ambiguous",
+      "output": {
+        "category": "water_outage",
+        "missing": [
+          "district"
+        ],
+        "review": true
+      },
+      "calls": [
+        {
+          "name": "lookup_address",
+          "arguments": {
+            "address": "Учебная, 3"
+          }
+        }
+      ],
+      "evidence": [
+        "fixture:two-matches"
+      ],
+      "abstained": true,
+      "cost_usd": 0,
+      "latency_ms": 0
+    },
+    {
+      "id": "conflicting-time",
+      "output": {
+        "restore_at": null,
+        "review": true
+      },
+      "calls": [],
+      "evidence": [
+        "fixture:notice-a",
+        "fixture:notice-b"
+      ],
+      "abstained": true,
+      "cost_usd": 0,
+      "latency_ms": 0
+    },
+    {
+      "id": "existing-incident",
+      "output": {
+        "suggested_incident": "INC-7",
+        "review": true
+      },
+      "calls": [
+        {
+          "name": "find_incidents",
+          "arguments": {
+            "address": "Учебная, 15"
+          }
+        }
+      ],
+      "evidence": [
+        "fixture:incident-7"
+      ],
+      "abstained": false,
+      "cost_usd": 0,
+      "latency_ms": 0
+    },
+    {
+      "id": "lookup-offline",
+      "output": {
+        "address_verified": false,
+        "review": true
+      },
+      "calls": [
+        {
+          "name": "lookup_address",
+          "arguments": {
+            "address": "Учебная, 15"
+          }
+        }
+      ],
+      "evidence": [
+        "fixture:timeout"
+      ],
+      "abstained": true,
+      "cost_usd": 0,
+      "latency_ms": 0
+    },
+    {
+      "id": "cause-unknown",
+      "output": {
+        "cause": null,
+        "review": true
+      },
+      "calls": [],
+      "evidence": [
+        "fixture:outage-open"
+      ],
+      "abstained": true,
+      "cost_usd": 0,
+      "latency_ms": 0
+    },
+    {
+      "id": "close-request",
+      "output": {
+        "action": "refer_to_dispatcher",
+        "review": true
+      },
+      "calls": [
+        {
+          "name": "close_incident",
+          "arguments": {
+            "incident_id": "INC-7"
+          }
+        }
+      ],
+      "evidence": [],
+      "abstained": true,
+      "cost_usd": 0,
+      "latency_ms": 0
+    }
+  ]
+}

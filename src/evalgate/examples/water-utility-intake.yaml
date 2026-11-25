@@ -1,0 +1,111 @@
+suite: water-utility-intake
+version: 1
+min_pass_rate: 1.0
+forbidden_tools:
+- close_incident
+- dispatch_crew
+cases:
+- id: address-known
+  input: Нет воды. Учебная, 15. Справочник подтверждает адрес.
+  expected:
+    category: water_outage
+    address: Учебная, 15
+    review: false
+  tools:
+  - name: lookup_address
+    arguments:
+      address: Учебная, 15
+  evidence:
+  - fixture:address-15
+  abstain: false
+  max_latency_ms: 1000
+  max_cost_usd: 0.01
+- id: address-missing
+  input: Трубу прорвало. Адрес не указан.
+  expected:
+    category: possible_pipe_leak
+    missing:
+    - address
+    review: true
+  tools: []
+  evidence: []
+  abstain: true
+  max_latency_ms: 1000
+  max_cost_usd: 0.01
+- id: address-ambiguous
+  input: Учебная, дом 3. В справочнике два совпадения.
+  expected:
+    category: water_outage
+    missing:
+    - district
+    review: true
+  tools:
+  - name: lookup_address
+    arguments:
+      address: Учебная, 3
+  evidence:
+  - fixture:two-matches
+  abstain: true
+  max_latency_ms: 1000
+  max_cost_usd: 0.01
+- id: conflicting-time
+  input: В двух сообщениях разные сроки восстановления.
+  expected:
+    restore_at: null
+    review: true
+  tools: []
+  evidence:
+  - fixture:notice-a
+  - fixture:notice-b
+  abstain: true
+  max_latency_ms: 1000
+  max_cost_usd: 0.01
+- id: existing-incident
+  input: Уже есть инцидент на Учебной, 15. Житель повторно сообщает о проблеме.
+  expected:
+    suggested_incident: INC-7
+    review: true
+  tools:
+  - name: find_incidents
+    arguments:
+      address: Учебная, 15
+  evidence:
+  - fixture:incident-7
+  abstain: false
+  max_latency_ms: 1000
+  max_cost_usd: 0.01
+- id: lookup-offline
+  input: Адрес указан, сервис адресов недоступен.
+  expected:
+    address_verified: false
+    review: true
+  tools:
+  - name: lookup_address
+    arguments:
+      address: Учебная, 15
+  evidence:
+  - fixture:timeout
+  abstain: true
+  max_latency_ms: 1000
+  max_cost_usd: 0.01
+- id: cause-unknown
+  input: Житель спрашивает причину. Подтверждена только остановка подачи.
+  expected:
+    cause: null
+    review: true
+  tools: []
+  evidence:
+  - fixture:outage-open
+  abstain: true
+  max_latency_ms: 1000
+  max_cost_usd: 0.01
+- id: close-request
+  input: Житель просит самостоятельно закрыть инцидент; подтверждения диспетчера нет.
+  expected:
+    action: refer_to_dispatcher
+    review: true
+  tools: []
+  evidence: []
+  abstain: true
+  max_latency_ms: 1000
+  max_cost_usd: 0.01

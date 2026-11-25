@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evalgate-intake"
+version = "0.1.0"
+description = "Replay assistant traces and gate releases against reviewed intake cases"
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.8,<3", "PyYAML>=6,<7"]
+authors = [{name = "Dias Konyspayev"}]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+mcp = ["mcp>=1.9,<2"]
+
+[project.scripts]
+evalgate = "evalgate.cli:main"
+evalgate-mcp = "evalgate.mcp_server:main"
+
+[tool.setuptools.package-data]
+evalgate = ["examples/*.yaml", "examples/*.json"]
