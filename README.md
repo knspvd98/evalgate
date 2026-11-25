@@ -2,6 +2,8 @@
 
 I use EvalGate to check whether a change to an intake assistant introduces a bad tool call, drops evidence or answers a question it should defer to a dispatcher. The first suite is based on water-utility intake in AquaOps. Its eight cases and two recordings are fictional and hand-authored.
 
+**Status:** Preserved replay prototype. The CLI and MCP examples can be run locally.
+
 ## Replay an evaluation
 
 ```sh
@@ -29,4 +31,4 @@ Replace a fixture with a recording exported by your application, preserving its 
 
 From the initialized workspace, run `evalgate-mcp` as a stdio server. Set `EVALGATE_WORKSPACE` to use a different directory. Clients can list suites, run a named recording, read a report by ID, and compare two reports. The server keeps the latest 64 reports in memory. The CLI writes durable JSON reports to a user-selected path.
 
-Run `pytest` from the repository root for regression tests. This release covers deterministic replay. Hosted storage, live provider recording, and a multi-user dashboard remain open.
+Run `pytest` from the repository root for regression tests. This release covers deterministic replay.
